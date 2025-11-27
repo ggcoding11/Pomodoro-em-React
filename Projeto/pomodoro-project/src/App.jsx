@@ -5,19 +5,20 @@ import "./App.css";
 import { use } from "react";
 
 function App() {
-  const tempoCicloPomodoro = 0.1;
-  const tempoPausaCurta = 5;
+  const tempoCicloPomodoro = 0.2;
+  const tempoPausaCurta = 0.1;
 
   const [estaLigadoTimer, setEstaLigadoTimer] = useState(false);
+  const [estaEmPausaCurta, setEstaEmPausaCurta] = useState(false);
+
   const [nomeBotao, setNomeBotao] = useState("START");
+
   const [segundosRestante, setSegundosRestante] = useState(
     tempoCicloPomodoro * 60
   );
   const [tempoFormatoPomodoro, setTempoFormatoPomodoro] = useState(
     String(tempoCicloPomodoro) + ":00"
   );
-
-  const [estaEmPausaCurta, setEstaEmPausaCurta] = useState(false);
 
   const clicarBotaoStartStop = () => {
     setEstaLigadoTimer(!estaLigadoTimer);
@@ -45,9 +46,28 @@ function App() {
   }, [estaLigadoTimer]);
 
   useEffect(() => {
+    if (estaEmPausaCurta == true) {
+      console.log("Iniciando pausa curta");
+      setTempoFormatoPomodoro(String(tempoPausaCurta) + ":00");
+      setNomeBotao("SKIP");
+
+      timer = setInterval(() => {
+        setSegundosRestante((segundosRestante) => segundosRestante - 1);
+      }, 1000);
+    }
+  }, [estaEmPausaCurta]);
+
+  useEffect(() => {
     if (segundosRestante == 0) {
-      setEstaLigadoTimer(false);
-      setEstaEmPausaCurta(true);
+      if (estaLigadoTimer == true) {
+        setEstaLigadoTimer(false);
+        setEstaEmPausaCurta(true);
+        setSegundosRestante(tempoPausaCurta * 60);
+      } else {
+        setEstaLigadoTimer(true);
+        setEstaEmPausaCurta(false);
+        setSegundosRestante(tempoCicloPomodoro * 60);
+      }
     }
 
     setTempoFormatoPomodoro(
@@ -56,13 +76,6 @@ function App() {
         String(segundosRestante % 60).padStart(2, "0")
     );
   }, [segundosRestante]);
-
-  useEffect(() => {
-    if (estaEmPausaCurta == true) {
-      console.log("Iniciando pausa curta");
-      setTempoFormatoPomodoro(String(tempoPausaCurta) + ":00");
-    }
-  }, [estaEmPausaCurta]);
 
   return (
     <div className="container-fluid vh-100 py-4 main">

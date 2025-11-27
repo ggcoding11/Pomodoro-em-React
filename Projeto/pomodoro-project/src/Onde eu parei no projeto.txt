@@ -1,6 +1,5 @@
-- Implementar corretamente a pausa curta do Pomodoro.
-- Ver se dá pra reaproveitar o estado e lógica já existente para o ciclo principal do Pomodoro.
-- Adicionar lógica para iniciar o timer da pausa curta quando o ciclo principal terminar.
+- Implementar botão de pular a pausa curta
+- Implemente a pausa longa também após os 4 pomodoros
 
 - Fonte: https://www.youtube.com/watch?v=ssm8udYdny0&t=1882s
 
