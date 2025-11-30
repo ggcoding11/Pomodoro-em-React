@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { use } from "react";
 
 function App() {
   const tempoCicloPomodoro = 0.2;
   const tempoPausaCurta = 0.1;
+
+  const [contPomodoro, setContPomodoro] = useState(1);
 
   const [estaLigadoTimer, setEstaLigadoTimer] = useState(false);
   const [estaEmPausaCurta, setEstaEmPausaCurta] = useState(false);
@@ -20,8 +21,17 @@ function App() {
     String(tempoCicloPomodoro) + ":00"
   );
 
+  let somClique = new Audio("src/assets/sounds/somBotao.mp3");
+
   const clicarBotaoStartStop = () => {
-    setEstaLigadoTimer(!estaLigadoTimer);
+    somClique.currentTime = 0;
+    somClique.play();
+
+    if (estaEmPausaCurta == false) {
+      setEstaLigadoTimer(!estaLigadoTimer);
+    } else {
+      setSegundosRestante(0);
+    }
   };
 
   let timer;
@@ -48,13 +58,16 @@ function App() {
   useEffect(() => {
     if (estaEmPausaCurta == true) {
       console.log("Iniciando pausa curta");
-      setTempoFormatoPomodoro(String(tempoPausaCurta) + ":00");
       setNomeBotao("SKIP");
 
       timer = setInterval(() => {
         setSegundosRestante((segundosRestante) => segundosRestante - 1);
       }, 1000);
     }
+
+    return () => {
+      clearInterval(timer);
+    };
   }, [estaEmPausaCurta]);
 
   useEffect(() => {
@@ -67,6 +80,7 @@ function App() {
         setEstaLigadoTimer(true);
         setEstaEmPausaCurta(false);
         setSegundosRestante(tempoCicloPomodoro * 60);
+        setContPomodoro((contPomodoro) => contPomodoro + 1);
       }
     }
 
@@ -103,6 +117,13 @@ function App() {
           </div>
         </div>
       </div>
+
+      <div className="row mt-3">
+        <div className="col-12 d-flex justify-content-center align-items-center">
+          <span className="text-white fw-bold">#{contPomodoro}</span>
+        </div>
+      </div>
+
       <div className="row row-buttons mt-4">
         <div className="col-12 d-flex justify-content-center gap-2">
           <button
