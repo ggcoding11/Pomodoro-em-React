@@ -6,11 +6,12 @@ import "./App.css";
 function App() {
   const tempoCicloPomodoro = 0.2;
   const tempoPausaCurta = 0.1;
+  const tempoPausaLonga = 0.3;
 
   const [contPomodoro, setContPomodoro] = useState(1);
 
   const [estaLigadoTimer, setEstaLigadoTimer] = useState(false);
-  const [estaEmPausaCurta, setEstaEmPausaCurta] = useState(false);
+  const [estaEmPausa, setEstaEmPausa] = useState(false);
 
   const [nomeBotao, setNomeBotao] = useState("START");
 
@@ -23,11 +24,12 @@ function App() {
 
   let somClique = new Audio("src/assets/sounds/somBotao.mp3");
 
+  //Clique do botão
   const clicarBotaoStartStop = () => {
     somClique.currentTime = 0;
     somClique.play();
 
-    if (estaEmPausaCurta == false) {
+    if (estaEmPausa == false) {
       setEstaLigadoTimer(!estaLigadoTimer);
     } else {
       setSegundosRestante(0);
@@ -36,6 +38,7 @@ function App() {
 
   let timer;
 
+  //Timer do pomodoro
   useEffect(() => {
     console.log("O estado estaLigado mudou para:", estaLigadoTimer);
 
@@ -55,9 +58,9 @@ function App() {
     };
   }, [estaLigadoTimer]);
 
+  //Timer da pausa
   useEffect(() => {
-    if (estaEmPausaCurta == true) {
-      console.log("Iniciando pausa curta");
+    if (estaEmPausa == true) {
       setNomeBotao("SKIP");
 
       timer = setInterval(() => {
@@ -68,19 +71,26 @@ function App() {
     return () => {
       clearInterval(timer);
     };
-  }, [estaEmPausaCurta]);
+  }, [estaEmPausa]);
 
+  //Lógica a cada segundo passado
   useEffect(() => {
     if (segundosRestante == 0) {
       if (estaLigadoTimer == true) {
         setEstaLigadoTimer(false);
-        setEstaEmPausaCurta(true);
-        setSegundosRestante(tempoPausaCurta * 60);
+        if (contPomodoro == 4) {
+          setSegundosRestante(tempoPausaLonga * 60);
+        } else {
+          setSegundosRestante(tempoPausaCurta * 60);
+        }
+
+        setEstaEmPausa(true);
       } else {
-        setEstaLigadoTimer(true);
-        setEstaEmPausaCurta(false);
+        setEstaEmPausa(false);
         setSegundosRestante(tempoCicloPomodoro * 60);
         setContPomodoro((contPomodoro) => contPomodoro + 1);
+
+        setEstaLigadoTimer(true);
       }
     }
 
