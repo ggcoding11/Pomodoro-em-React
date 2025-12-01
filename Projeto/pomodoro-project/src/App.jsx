@@ -38,31 +38,18 @@ function App() {
 
   let timer;
 
-  //Timer do pomodoro
-  useEffect(() => {
-    console.log("O estado estaLigado mudou para:", estaLigadoTimer);
-
-    if (estaLigadoTimer == true) {
-      setNomeBotao("STOP");
-
-      timer = setInterval(() => {
-        setSegundosRestante((segundosRestante) => segundosRestante - 1);
-      }, 1000);
-    } else {
-      setNomeBotao("START");
-    }
-
-    return () => {
-      clearInterval(timer);
-      console.log("Intervalo limpo");
-    };
-  }, [estaLigadoTimer]);
-
-  //Timer da pausa
   useEffect(() => {
     if (estaEmPausa == true) {
       setNomeBotao("SKIP");
+    } else {
+      if (estaLigadoTimer == true) {
+        setNomeBotao("STOP");
+      } else {
+        setNomeBotao("START");
+      }
+    }
 
+    if (estaLigadoTimer == true || estaEmPausa == true) {
       timer = setInterval(() => {
         setSegundosRestante((segundosRestante) => segundosRestante - 1);
       }, 1000);
@@ -71,9 +58,8 @@ function App() {
     return () => {
       clearInterval(timer);
     };
-  }, [estaEmPausa]);
+  }, [estaLigadoTimer, estaEmPausa]);
 
-  //Lógica a cada segundo passado
   useEffect(() => {
     if (segundosRestante == 0) {
       if (estaLigadoTimer == true) {

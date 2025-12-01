@@ -1,4 +1,3 @@
-- Implemente a pausa longa também após os 4 pomodoros
 - Fazer com que o botão clique quando eu apertar SPACE
 
 - Fonte: https://www.youtube.com/watch?v=ssm8udYdny0&t=1882s
