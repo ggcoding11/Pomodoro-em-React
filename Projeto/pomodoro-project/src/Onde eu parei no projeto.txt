@@ -1,4 +1,5 @@
-- Fazer com que o botão clique quando eu apertar SPACE
+- Resolver o problema do clique do botão com o SPACE
+- De brinde, entenda sobre o useRef e como aplicar nesse código
 
 - Fonte: https://www.youtube.com/watch?v=ssm8udYdny0&t=1882s
 

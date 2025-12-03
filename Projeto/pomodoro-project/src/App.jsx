@@ -25,6 +25,7 @@ function App() {
   let somClique = new Audio("src/assets/sounds/somBotao.mp3");
 
   //Clique do botão
+
   const clicarBotaoStartStop = () => {
     somClique.currentTime = 0;
     somClique.play();
@@ -35,6 +36,21 @@ function App() {
       setSegundosRestante(0);
     }
   };
+
+  useEffect(() => {
+    function handleClickSpace(event) {
+      if (event.code === "Space") {
+        console.log("Clicou!");
+        clicarBotaoStartStop();
+      }
+    }
+
+    window.addEventListener("keydown", handleClickSpace);
+
+    return () => {
+      window.removeEventListener("keydown", handleClickSpace);
+    };
+  }, []);
 
   let timer;
 
