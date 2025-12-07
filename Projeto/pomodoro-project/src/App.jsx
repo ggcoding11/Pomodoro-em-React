@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -22,16 +22,17 @@ function App() {
     String(tempoCicloPomodoro) + ":00"
   );
 
-  let somClique = new Audio("src/assets/sounds/somBotao.mp3");
-
-  //Clique do botão
+  const somClique = useRef(new Audio("src/assets/sounds/somBotao.mp3"));
 
   const clicarBotaoStartStop = () => {
-    somClique.currentTime = 0;
-    somClique.play();
+    somClique.current.currentTime = 0;
+    somClique.current.play();
 
-    if (estaEmPausa == false) {
+    console.log("Aqui foi")
+
+    if (estaEmPausa === false) {
       setEstaLigadoTimer(!estaLigadoTimer);
+      console.log("Trocou o estado!")
     } else {
       setSegundosRestante(0);
     }
@@ -52,35 +53,35 @@ function App() {
     };
   }, []);
 
-  let timer;
+  const timer = useRef();
 
   useEffect(() => {
-    if (estaEmPausa == true) {
+    if (estaEmPausa === true) {
       setNomeBotao("SKIP");
     } else {
-      if (estaLigadoTimer == true) {
+      if (estaLigadoTimer === true) {
         setNomeBotao("STOP");
       } else {
         setNomeBotao("START");
       }
     }
 
-    if (estaLigadoTimer == true || estaEmPausa == true) {
-      timer = setInterval(() => {
+    if (estaLigadoTimer === true || estaEmPausa === true) {
+      timer.current = setInterval(() => {
         setSegundosRestante((segundosRestante) => segundosRestante - 1);
       }, 1000);
     }
 
     return () => {
-      clearInterval(timer);
+      clearInterval(timer.current);
     };
   }, [estaLigadoTimer, estaEmPausa]);
 
   useEffect(() => {
-    if (segundosRestante == 0) {
-      if (estaLigadoTimer == true) {
+    if (segundosRestante === 0) {
+      if (estaLigadoTimer === true) {
         setEstaLigadoTimer(false);
-        if (contPomodoro == 4) {
+        if (contPomodoro === 4) {
           setSegundosRestante(tempoPausaLonga * 60);
         } else {
           setSegundosRestante(tempoPausaCurta * 60);
