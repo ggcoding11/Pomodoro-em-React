@@ -28,30 +28,12 @@ function App() {
     somClique.current.currentTime = 0;
     somClique.current.play();
 
-    console.log("Aqui foi")
-
     if (estaEmPausa === false) {
       setEstaLigadoTimer(!estaLigadoTimer);
-      console.log("Trocou o estado!")
     } else {
       setSegundosRestante(0);
     }
   };
-
-  useEffect(() => {
-    function handleClickSpace(event) {
-      if (event.code === "Space") {
-        console.log("Clicou!");
-        clicarBotaoStartStop();
-      }
-    }
-
-    window.addEventListener("keydown", handleClickSpace);
-
-    return () => {
-      window.removeEventListener("keydown", handleClickSpace);
-    };
-  }, []);
 
   const timer = useRef();
 
@@ -104,6 +86,23 @@ function App() {
     );
   }, [segundosRestante]);
 
+  function clicarPomodoro() {
+    if (estaEmPausa === true) {
+      setEstaEmPausa(false);
+    } else {
+      setSegundosRestante(tempoCicloPomodoro * 60);
+      setEstaLigadoTimer(true);
+    }
+  }
+
+  function clicarPausaCurta(){
+
+  }
+
+  function clicarPausaLonga(){
+    
+  }
+
   return (
     <div className="container-fluid vh-100 py-4 main">
       <div className="row">
@@ -116,9 +115,24 @@ function App() {
       </div>
       <div className="row row-buttons mt-2">
         <div className="col-12 d-flex justify-content-center gap-2">
-          <button className="btn text-white fw-semibold">Pomodoro</button>
-          <button className="btn text-white fw-semibold">Short Break</button>
-          <button className="btn text-white fw-semibold">Long Break</button>
+          <button
+            onClick={clicarPomodoro}
+            className="btn text-white fw-semibold"
+          >
+            Pomodoro
+          </button>
+          <button
+            onClick={clicarPausaCurta}
+            className="btn text-white fw-semibold"
+          >
+            Short Break
+          </button>
+          <button
+            onClick={clicarPausaLonga}
+            className="btn text-white fw-semibold"
+          >
+            Long Break
+          </button>
         </div>
       </div>
       <div className="row mt-4">
