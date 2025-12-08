@@ -1,12 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
+import somBotao from "./assets/sounds/somBotao.mp3"
 import "./App.css";
 
 function App() {
-  const tempoCicloPomodoro = 0.2;
-  const tempoPausaCurta = 0.1;
-  const tempoPausaLonga = 0.3;
+  const tempoCicloPomodoro = 25;
+  const tempoPausaCurta = 5;
+  const tempoPausaLonga = 30;
 
   const [contPomodoro, setContPomodoro] = useState(1);
 
@@ -22,7 +23,7 @@ function App() {
     String(tempoCicloPomodoro) + ":00"
   );
 
-  const somClique = useRef(new Audio("src/assets/sounds/somBotao.mp3"));
+  const somClique = useRef(new Audio(somBotao));
 
   const clicarBotaoStartStop = () => {
     somClique.current.currentTime = 0;
@@ -63,7 +64,7 @@ function App() {
     if (segundosRestante === 0) {
       if (estaLigadoTimer === true) {
         setEstaLigadoTimer(false);
-        if (contPomodoro === 4) {
+        if (contPomodoro%4 === 0) {
           setSegundosRestante(tempoPausaLonga * 60);
         } else {
           setSegundosRestante(tempoPausaCurta * 60);
