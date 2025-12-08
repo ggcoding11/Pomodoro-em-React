@@ -86,23 +86,6 @@ function App() {
     );
   }, [segundosRestante]);
 
-  function clicarPomodoro() {
-    if (estaEmPausa === true) {
-      setEstaEmPausa(false);
-    } else {
-      setSegundosRestante(tempoCicloPomodoro * 60);
-      setEstaLigadoTimer(true);
-    }
-  }
-
-  function clicarPausaCurta(){
-
-  }
-
-  function clicarPausaLonga(){
-    
-  }
-
   return (
     <div className="container-fluid vh-100 py-4 main">
       <div className="row">
@@ -113,34 +96,15 @@ function App() {
           </h1>
         </div>
       </div>
-      <div className="row row-buttons mt-2">
-        <div className="col-12 d-flex justify-content-center gap-2">
-          <button
-            onClick={clicarPomodoro}
-            className="btn text-white fw-semibold"
-          >
-            Pomodoro
-          </button>
-          <button
-            onClick={clicarPausaCurta}
-            className="btn text-white fw-semibold"
-          >
-            Short Break
-          </button>
-          <button
-            onClick={clicarPausaLonga}
-            className="btn text-white fw-semibold"
-          >
-            Long Break
-          </button>
-        </div>
-      </div>
+
       <div className="row mt-4">
         <div className="col-12 d-flex justify-content-center">
-          <div className="container-timer d-flex justify-content-center align-items-center">
-            <span className="text-center text-white fw-bold" id="timer">
-              {tempoFormatoPomodoro}
-            </span>
+          <div className= {estaEmPausa === false ? "circulo-externo d-flex justify-content-center align-items-center em-timer" : "circulo-externo d-flex justify-content-center align-items-center em-pausa"}>
+            <div className="container-timer d-flex justify-content-center align-items-center">
+              <span className="text-center text-white fw-bold" id="timer">
+                {tempoFormatoPomodoro}
+              </span>
+            </div>
           </div>
         </div>
       </div>

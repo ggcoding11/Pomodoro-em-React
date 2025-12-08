@@ -1,4 +1,2 @@
-- Arrumar os botões para pomodoro, 'curto' e 'longo' funcionarem corretamente.
-
 - Fonte: https://www.youtube.com/watch?v=ssm8udYdny0&t=1882s
 
